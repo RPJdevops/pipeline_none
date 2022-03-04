@@ -1,27 +1,43 @@
-pipeline {
-agent none
-stage {'build'} {
-agent {label : 'node1'}
-steps {
-sh 'sleep 5; echo " this is a build "'
-}
-}
-stage {'test1'}
-agent {label : 'node2'}
-steps {
-sh '''
-sleep 5
-echo " this is test stage"
-'''
-}
-}
-stage {'deploy'}
-agent {label : 'node2'}
-steps {
-sh '''
-sleep 5
-echo " this is deploy stage"
-'''
-}
-}
+	pipeline {
+	agent none
+	stages {
+		stage('Both build and test') {
+				stage('Build') { 
+          agent {label : 'node1'}
+					steps {
+						sh 'sleep 15; echo "This is a Build stage"'
+					}
+				}
+				
+				stage('Test'){
+          agent {label : 'node2'}
+					steps {
+						sh '''
+							sleep 15
+							echo "This is a Test stage"
+						'''	
+						git branch: 'main', url: 'https://github.com/RPJdevops/pipeline-job.git'
+					}
+				}
+			} 
+		}
+		stage('Deploy'){
+      agent {label : 'node1'}
+			steps {
+				sh '''
+					sleep 5
+					echo "This is a Deploy stage"
+				'''
+			}
+		}
+		
+		stage('My-stage'){
+			steps {
+				sh '''
+					sleep 5
+					echo "This is a My-stage stage"
+				'''
+			}
+		}	
+	}
 }

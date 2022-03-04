@@ -1,8 +1,7 @@
 	pipeline {
 	agent none
 	stages {
-		stage('Both build and test') {
-				stage('Build') { 
+		stage('Build') {
           agent {label : 'node1'}
 					steps {
 						sh 'sleep 15; echo "This is a Build stage"'
@@ -19,8 +18,6 @@
 						git branch: 'main', url: 'https://github.com/RPJdevops/pipeline-job.git'
 					}
 				}
-			} 
-		}
 		stage('Deploy'){
       agent {label : 'node1'}
 			steps {
@@ -30,13 +27,5 @@
 				'''
 			}
 		}
-		
-		stage('My-stage'){
-			steps {
-				sh '''
-					sleep 5
-					echo "This is a My-stage stage"
-				'''
-			}
-		}	
+	}
 	}
